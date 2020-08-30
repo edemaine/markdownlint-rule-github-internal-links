@@ -1,10 +1,11 @@
 ###
+Convert heading text into anchor link, using the algorithm from
 https://github.com/jch/html-pipeline/blob/master/lib/html/pipeline/toc_filter.rb
+as described in
 https://gist.github.com/asabaylus/3071099
 ###
-anchor = (heading, headings) ->
-  heading
-  .trim()
+headingToAnchor = (heading, headings) ->
+  heading = heading
   .toLowerCase()
   .replace /[^\w\- ]/g, ''
   .replace /[ ]/g, '-'
@@ -22,26 +23,30 @@ module.exports =
     links = []
     heading = null
     headings = {}
-    anchors = {}
     for token in tokens
       switch token.type
         when 'inline'
           for child in token.children
             switch child.type
               when 'link_open'
-                for [key, value] in token.attrs
+                for [key, value] in child.attrs
                   if key == 'href' and value?.startsWith '#'
-                    links.push value[1..]
+                    links.push
+                      anchor: value[1..]
+                      lineNumber: child.lineNumber
               when 'text'
                 heading += child.content if heading?
         when 'heading_open'
           heading = ''
         when 'heading_close'
-          anchors[anchor heading, headings] = true
+          anchor = headingToAnchor heading, headings
           heading = null
     console.log headings
-    console.log anchors
-    for anchor of anchors
-      unless anchor of anchors
-        onError "Internal anchor link ##{anchor} does not match any heading"
+    console.log links
+    for {anchor, lineNumber} in links
+      unless anchor of headings
+        onError
+          lineNumber: lineNumber
+          detail: 'Internal anchor link does not match any heading'
+          context: "##{anchor}"
     undefined
