@@ -1,0 +1,10 @@
+{
+  "customRules": [
+    "markdownlint-rule-github-internal-links"
+  ],
+  "config": {
+    "github-internal-links": {
+      "verbose": true
+    }
+  }
+}

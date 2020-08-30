@@ -18,21 +18,40 @@ while [the link `#config`](#config) will.
    npm install -D markdownlint-rule-github-internal-links
    ```
 
-2. Enable the rule in your call to
-   [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli):
+2. Enable the rule:
 
-   ```sh
-   markdownlint ... --rules markdownlint-rule-github-internal-links
-   ```
+   * If you're using
+     [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli),
+     add a command-line argument to import the rule:
 
-   See the sample `test` script in [this `package.json`](package.json).
+     ```sh
+     markdownlint ... --rules markdownlint-rule-github-internal-links
+     ```
+
+     See the `test:cli` script in [this `package.json`](package.json).
+
+   * If you're using
+     [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2),
+     add a `customRules` element to your `.markdownlint-cli2.jsonc`:
+
+     ```sh
+     "customRules": [
+       "markdownlint-rule-github-internal-links"
+     ]
+     ```
+
+     See the [sample .markdownlint-cli2.jsonc](.markdownlint-cli2.jsonc)
+     (which also turns on [verbose mode](#configuration), which you probably
+     don't want),
+     and the `test:cli2` script in [this `package.json`](package.json).
 
 ## Configuration
 
 You can pass in a setting of `verbose: true` to make this plugin display
 every anchor link it computes and every link it tests.  This can be useful
 for debugging your anchor links, when it's hard to guess how many `-`s to add.
-See [sample .markdownlint.yaml](.markdownlint.yaml).
+See [sample .markdownlint.yaml](.markdownlint.yaml) (for cli or cli2)
+and [sample .markdownlint-cli2.jsonc](.markdownlint-cli2.jsonc) (for cli2).
 
 ## <span></span> More **Complex** Example
 
