@@ -34,6 +34,8 @@ module.exports =
                     links.push
                       anchor: value[1..]
                       lineNumber: child.lineNumber
+                  else if key == 'name' and value
+                    headings[value] = 1
               when 'text', 'code_inline'
                 heading += child.content if heading?
         when 'heading_open'
